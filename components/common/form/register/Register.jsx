@@ -1,11 +1,27 @@
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import LoginWithSocial from "./LoginWithSocial";
-import Form from "./FormContent";
-import Link from "next/link";
+import React from 'react';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import firebase from '../../../../utils/firebase'
+import 'firebase/auth';
+import Form from './FormContent';
+import Link from 'next/link';
+import LoginWithSocial from './LoginWithSocial';
 
 const Register = () => {
+
+  const handleRegistration = async (email, password) => {
+    try {
+      const userCredential = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password);
+
+      // User registration successful, you can perform additional actions here
+      console.log('Registration successful', userCredential.user);
+    } catch (err) {
+      console.log('Registration error:', err);
+    }
+  };
   return (
-    <div className="form-inner">
+     <div className="form-inner">
       <h3>Create a Free Account</h3>
 
       <Tabs>
@@ -27,12 +43,12 @@ const Register = () => {
         {/* End .form-group */}
 
         <TabPanel>
-          <Form />
+          <Form onRegistration={handleRegistration} />
         </TabPanel>
         {/* End cadidates Form */}
 
         <TabPanel>
-          <Form />
+          <Form onRegistration={handleRegistration} />
         </TabPanel>
         {/* End Employer Form */}
       </Tabs>
@@ -40,7 +56,7 @@ const Register = () => {
 
       <div className="bottom-box">
         <div className="text">
-          Already have an account?{" "}
+          Already have an account?{' '}
           <Link
             href="#"
             className="call-modal login"
