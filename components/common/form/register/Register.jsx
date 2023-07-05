@@ -1,21 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import firebase from '../../../../utils/firebase'
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-import Form from './FormContent';
+import FormContent from './FormContent';
 import Link from 'next/link';
 import LoginWithSocial from './LoginWithSocial';
+import firebase from '../../../../utils/firebase';
 
 const Register = () => {
+  const [regError, setRegError] = useState('');
+
   const handleRegistration = async (email, password) => {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d!@#$%^&*()]{8,}$/;
+
     try {
-      const auth = getAuth();
+      if (!passwordRegex.test(password)) {
+        setRegError('Password should be at least 8 characters and contain at least one uppercase letter, one lowercase letter, and one number');
+        throw new Error('Password should be at least 8 characters and contain at least one uppercase letter, one lowercase letter, and one number');
+      }
+
+      const auth = getAuth(firebase);
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 
-      // User registration successful, you can perform additional actions here
       console.log('Registration successful', userCredential.user);
+      setRegError(''); // Clear any previous registration error
     } catch (err) {
       console.log('Registration error:', err);
+      if (err.code === 'auth/email-already-in-use') {
+        setRegError('Email already in use. Try logging in or resetting your password.');
+      } else if (err.code === 'auth/weak-password') {
+        setRegError('Password should be at least 6 characters');
+      } else {
+        setRegError('Something went wrong. Please try again later.')
+      }
     }
   };
 
@@ -24,7 +40,7 @@ const Register = () => {
   };
 
   return (
-     <div className="form-inner">
+    <div className="form-inner">
       <h3>Create a Free Account</h3>
 
       <Tabs>
@@ -43,19 +59,15 @@ const Register = () => {
             </Tab>
           </TabList>
         </div>
-        {/* End .form-group */}
 
         <TabPanel>
-          <Form onSubmit={handleRegistration} />
+          <FormContent onSubmit={handleSubmit} regError={regError} />
         </TabPanel>
-        {/* End cadidates Form */}
 
         <TabPanel>
-          <Form onSubmit={handleRegistration} />
+          <FormContent onSubmit={handleSubmit} regError={regError} />
         </TabPanel>
-        {/* End Employer Form */}
       </Tabs>
-      {/* End form-group */}
 
       <div className="bottom-box">
         <div className="text">
@@ -75,7 +87,6 @@ const Register = () => {
         </div>
         <LoginWithSocial />
       </div>
-      {/* End bottom-box LoginWithSocial */}
     </div>
   );
 };
