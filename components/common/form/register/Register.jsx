@@ -1,18 +1,16 @@
 import React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import firebase from '../../../../utils/firebase'
-import 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import Form from './FormContent';
 import Link from 'next/link';
 import LoginWithSocial from './LoginWithSocial';
 
 const Register = () => {
-
   const handleRegistration = async (email, password) => {
     try {
-      const userCredential = await firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password);
+      const auth = getAuth();
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 
       // User registration successful, you can perform additional actions here
       console.log('Registration successful', userCredential.user);
@@ -20,6 +18,11 @@ const Register = () => {
       console.log('Registration error:', err);
     }
   };
+
+  const handleSubmit = async (email, password) => {
+    handleRegistration(email, password);
+  };
+
   return (
      <div className="form-inner">
       <h3>Create a Free Account</h3>
@@ -43,12 +46,12 @@ const Register = () => {
         {/* End .form-group */}
 
         <TabPanel>
-          <Form onRegistration={handleRegistration} />
+          <Form onSubmit={handleRegistration} />
         </TabPanel>
         {/* End cadidates Form */}
 
         <TabPanel>
-          <Form onRegistration={handleRegistration} />
+          <Form onSubmit={handleRegistration} />
         </TabPanel>
         {/* End Employer Form */}
       </Tabs>
