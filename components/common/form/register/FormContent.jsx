@@ -42,8 +42,8 @@ const FormContent = ({ onSubmit, regError }) => {
         />
       </div>
 
-      {regError && <span className="error-label">{regError}</span>}
-      {errorMessage && <span className="error-label">{errorMessage}</span>}
+      {regError && <span className="error-label text-red ">{regError}</span>}
+      {errorMessage && <span className="error-label text-red">{errorMessage}</span>}
 
       <div className="form-group">
         <button className="theme-btn btn-style-one" type="submit">
