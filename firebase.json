@@ -1,16 +1,29 @@
 {
-  "hosting": {
-    "source": ".",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
-    "frameworksBackend": {
-      "region": "us-east1"
+    "hosting": {
+      "public": ".",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "function": "nextServer"
+        }
+      ]
+    },
+    "functions": {
+      "source": ".",
+      "runtime": "nodejs18",
+      "ignore": [
+        "**/.vscode/**",
+        ".firebase/**",
+        ".firebaserc",
+        "firebase.json",
+        "**/node_modules/**",
+        "**/public/**",
+        "**/.next/cache/**"
+      ]
     }
-  },
-  "functions": {
-    "source": "functions"
   }
-}
