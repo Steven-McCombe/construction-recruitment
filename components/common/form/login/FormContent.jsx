@@ -63,15 +63,15 @@ const FormContent = () => {
           <input type="password" name="password" placeholder="Password" value={password} onChange={handlePasswordChange} required />
         </div>
         {isLoginSuccess ? (
-          <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+          <div className="alert alert-success alert-dismissible fade show text-center" role="alert">
           <strong>Success</strong> You are now logged in
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
           ) : (
           errorMessage && 
-          <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+          <div className="alert alert-danger alert-dismissible fade show text-center" role="alert">
           <strong>Error:</strong> <span className="error-label text-red">{errorMessage}</span>
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         
           )}

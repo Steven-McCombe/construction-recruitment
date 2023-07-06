@@ -1,9 +1,10 @@
+// .\construction-recruitment\utils\firebase.js
+
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+import { getFirestore } from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
-let analytics = null;
 
-if (typeof window !== 'undefined') {
   // Your web app's Firebase configuration
   const firebaseConfig = {
     apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -14,10 +15,17 @@ if (typeof window !== 'undefined') {
     appId: process.env.NEXT_PUBLIC_APP_ID,
     measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
   };
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
 
-  // Initialize Firebase and analytics only in the browser environment
-  const app = initializeApp(firebaseConfig);
-  analytics = getAnalytics(app);
-}
 
-export { analytics };
+// Initialize Authentication and Firestore
+const auth = getAuth();
+const db = getFirestore();
+
+// Set up authentication state change listener
+const onAuthStateChange = (callback) => {
+  return onAuthStateChanged(auth, callback);
+};
+
+export { auth, db, onAuthStateChange };
