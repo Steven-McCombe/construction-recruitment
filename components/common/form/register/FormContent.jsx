@@ -1,3 +1,4 @@
+// .\components\common\form\register\FormContent.jsx
 import React, { useState } from 'react';
 
 const FormContent = ({ onSubmit, regError }) => {

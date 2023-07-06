@@ -1,3 +1,5 @@
+// .\components\common\form\login\LoginWithSocial.jsx
+
 const LoginWithSocial = () => {
   return (
     <div className="btn-box row">

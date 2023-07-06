@@ -1,3 +1,5 @@
+// .\components\common\form\register\Register.jsx
+
 import React, { useState } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, reload } from 'firebase/auth';
@@ -46,7 +48,7 @@ const Register = () => {
       } else if (err.code === 'auth/weak-password') {
         setRegError('Password should be at least 6 characters');
       } else {
-        setRegError('Something went wrong. Please try again later.');
+        setRegError('Password should be at least 8 characters and contain at least one uppercase letter, one lowercase letter, and one number');
       }
     }
   };
