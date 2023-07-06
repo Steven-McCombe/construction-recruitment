@@ -1,6 +1,7 @@
 {
   "projects": {
-    "staging": "job-board-6c834"
+    "staging": "job-board-6c834",
+    "default": "job-board-6c834"
   },
   "targets": {},
   "etags": {}
