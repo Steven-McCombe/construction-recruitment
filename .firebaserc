@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "job-board-6c834"
-  }
+    "default": "job-board-6c834",
+    "hosting": "job-board-6c834"
+  },
+  "targets": {},
+  "etags": {}
 }
