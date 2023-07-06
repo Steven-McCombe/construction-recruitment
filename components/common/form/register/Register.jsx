@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { createUserWithEmailAndPassword, sendEmailVerification, getAuth } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import FormContent from './FormContent';
 import Link from 'next/link';
-import { auth, db } from '../../../../utils/firebase'
+import { auth, db } from '../../../../utils/firebase';
 
 const Register = () => {
   const [regError, setRegError] = useState('');
   const [isEmailConfirmed, setIsEmailConfirmed] = useState(false);
   const [isConfirmationSent, setIsConfirmationSent] = useState(false);
   const [emailAddress, setEmailAddress] = useState('');
-  const [selectedRole, setSelectedRole] = useState('');
+  const [selectedRole, setSelectedRole] = useState('candidate');
 
   const handleRegistration = async (email, password) => {
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d!@#$%^&*()]{8,}$/;
@@ -26,22 +26,21 @@ const Register = () => {
         );
       }
   
-      const auth = getAuth(); // Use getAuth without passing the app instance
+      const auth = getAuth();
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
   
       console.log('Registration successful', userCredential.user);
-      setRegError(''); // Clear any previous registration error
+      setRegError('');
   
       // Send email verification
       await sendEmailVerification(auth.currentUser);
       setIsConfirmationSent(true);
       setEmailAddress(email);
-      setIsEmailConfirmed(auth.currentUser.emailVerified); // Update the email verification status
+      setIsEmailConfirmed(auth.currentUser.emailVerified);
   
-      // Store the user's selected role in the database
       const docRef = doc(db, 'users', userCredential.user.uid);
       await setDoc(docRef, {
-        role: selectedRole,
+        role: selectedRole, // Update the 'role' field with the selected role
       });
   
       // Email verification sent
@@ -59,6 +58,20 @@ const Register = () => {
       }
     }
   };
+  
+
+  const handleTabSelect = (index) => {
+    if (index === 0) {
+      setSelectedRole('candidate');
+    } else if (index === 1) {
+      setSelectedRole('employer');
+    }
+  };
+  
+  useEffect(() => {
+    console.log('Selected Role:', selectedRole);
+  }, [selectedRole]);
+  
 
   const handleSubmit = async (email, password) => {
     handleRegistration(email, password);
@@ -70,13 +83,13 @@ const Register = () => {
         <div className="text-center">
           <h3>Please confirm your email</h3>
           <p>
-            A confirmation email has been sent to <strong>{emailAddress}</strong>. If this is not your email, please Retry Registration
+            A confirmation email has been sent to <strong>{emailAddress}</strong>. If this is not your email, please <a className="" onClick={() => setIsConfirmationSent(false)}>Retry Registration</a>
           </p>
           <br />
           <p>Please check your inbox and follow the instructions to verify your account.</p>
           <br />
           <p>Check spam/Junk folders. Confirmation Link will expire in 15 minutes</p>
-          <div className="d-flex my-2 gap-1">
+          <div className="my-2">
             <button className="theme-btn btn-style-four">
               <Link
                 href="#"
@@ -88,39 +101,36 @@ const Register = () => {
                 Already Confirmed? LogIn
               </Link>
             </button>
-            <button className="theme-btn btn-style-two" onClick={() => setIsConfirmationSent(false)}>
-              Retry Registration
-            </button>
           </div>
         </div>
       ) : (
         <div>
           <h3>Create a Free Account</h3>
-          <Tabs>
+          <Tabs onSelect={handleTabSelect} defaultIndex={0}>
             <div className="form-group register-dual">
               <TabList className="btn-box row">
-                <Tab className="col-lg-6 col-md-12" onClick={() => setSelectedRole('candidate')}>
-                  <button className="theme-btn btn-style-four">
+                <Tab className="col-lg-6 col-md-12">
+                  <button className={`theme-btn btn-style-four ${selectedRole === 'candidate' ? 'active' : ''}`}>
                     <i className="la la-user"></i> Candidate
                   </button>
                 </Tab>
-                <Tab className="col-lg-6 col-md-12" onClick={() => setSelectedRole('employer')}>
-                  <button className="theme-btn btn-style-four">
+                <Tab className="col-lg-6 col-md-12">
+                  <button className={`theme-btn btn-style-four ${selectedRole === 'employer' ? 'active' : ''}`}>
                     <i className="la la-briefcase"></i> Employer
                   </button>
                 </Tab>
               </TabList>
             </div>
-
+  
             <TabPanel>
               <FormContent onSubmit={handleSubmit} regError={regError} />
             </TabPanel>
-
+  
             <TabPanel>
               <FormContent onSubmit={handleSubmit} regError={regError} />
             </TabPanel>
           </Tabs>
-
+  
           <div className="bottom-box">
             <div className="text">
               Already have an account?{' '}
@@ -139,6 +149,7 @@ const Register = () => {
       )}
     </div>
   );
-};
+}
+
 
 export default Register;
