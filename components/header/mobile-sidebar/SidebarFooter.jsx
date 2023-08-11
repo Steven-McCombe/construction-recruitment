@@ -17,7 +17,7 @@ const SidebarFooter = () => {
         <div className="contact-info">
           <span className="phone-num">
             <span>Call us</span>
-            <a href="tel:1234567890">123 456 7890</a>
+            <a href="tel:0000000000">00000000</a>
           </span>
           <span className="address">
             329 Queensberry Street, North Melbourne VIC <br />
