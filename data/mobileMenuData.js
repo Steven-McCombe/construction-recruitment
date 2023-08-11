@@ -101,32 +101,8 @@ export default [
         label: "Shop",
         items: [
             {
-                name: "Shop List",
+                name: "Shop Merch",
                 routePath: "/shop/shop-list",
-            },
-            {
-                name: "Shop Single",
-                routePath: "/shop/shop-single/1",
-            },
-            {
-                name: " Cart",
-                routePath: "/shop/cart",
-            },
-            {
-                name: "Checkout",
-                routePath: "/shop/checkout",
-            },
-            {
-                name: "Order Completed",
-                routePath: "/shop/order-completed",
-            },
-            {
-                name: "Login",
-                routePath: "/login",
-            },
-            {
-                name: "Register",
-                routePath: "/register",
             },
         ],
     },
