@@ -1,10 +1,12 @@
 import Select from "react-select";
-import { useState , useEffect } from "react";
+import { useState, useEffect } from "react";
 import firebase from 'firebase/app'
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { db } from "../../../../../../utils/firebase";
 import { getAuth } from 'firebase/auth';
 import catOptions from "../../../../../../data/jobCategories";
+import languages from "../../../../../../data/languages";
+
 const FormInfoBox = ({ avatarUrl }) => {
 
   const [candidate, setCandidate] = useState({
@@ -18,7 +20,7 @@ const FormInfoBox = ({ avatarUrl }) => {
     experience: '',
     age: '',
     educationLevels: '',
-    languages: '',
+    languages: [],
     allowInSearch: 'Yes',
     description: '',
   });
@@ -113,7 +115,6 @@ const FormInfoBox = ({ avatarUrl }) => {
             type="number"
             value={candidate.hourlyRate}
             onChange={e => setCandidate(prev => ({ ...prev, hourlyRate: e.target.value }))}
-            defaultValue="Not Disclosed"
           // required
           />
         </div>
@@ -161,18 +162,21 @@ const FormInfoBox = ({ avatarUrl }) => {
           <input
             type="text"
             value={candidate.educationLevels}
-            placeholder="Certificate"
+            placeholder="High School"
             onChange={e => setCandidate(prev => ({ ...prev, educationLevels: e.target.value }))}
           // required
           />
         </div>
         <div className="form-group col-lg-6 col-md-12">
           <label>Languages</label>
-          <input
-            type="text"
+          <Select
+            isMulti
+            className="basic-multi-select"
+            classNamePrefix="select"
+            options={languages}
             value={candidate.languages}
-            onChange={e => setCandidate(prev => ({ ...prev, languages: e.target.value }))}
-            placeholder="English, Turkish"
+            onChange={e => setCandidate(prev => ({ ...prev, languages: e }))}
+            placeholder="e.g English, Spanish"
           // required
           />
         </div>
