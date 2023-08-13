@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { doc, setDoc } from 'firebase/firestore';
+import { useState, useEffect } from "react";
+import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { db } from "../../../../../utils/firebase";
 import { getAuth } from 'firebase/auth';
 
@@ -10,6 +10,30 @@ const SocialNetworkBox = () => {
     linkedin: '',
     googlePlus: ''
   });
+
+  useEffect(() => {
+    const auth = getAuth();
+
+    const unsubscribe = auth.onAuthStateChanged(user => {
+        if (user) {
+            console.log("User ID from onAuthStateChanged:", user.uid);
+
+            const docRef = doc(db, 'candidates', user.uid);
+            getDoc(docRef).then(docSnap => {
+                if (docSnap.exists() && docSnap.data().socialLinks) {
+                    setSocialLinks(docSnap.data().socialLinks);
+                }
+            });
+        } else {
+            console.log("User not authenticated from onAuthStateChanged.");
+        }
+    });
+
+    // Cleanup listener on component unmount
+    return () => unsubscribe();
+}, []);
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,16 +47,11 @@ const SocialNetworkBox = () => {
       try {
         await setDoc(docRef, { socialLinks }, { merge: true });
         console.log("Social links saved successfully.");
-        setSocialLinks({
-          facebook: '',
-          twitter: '',
-          linkedin: '',
-          googlePlus: ''
-        });
       } catch (error) {
         console.error("Error writing document: ", error);
       }
     }
+  
   }
 
   return (
