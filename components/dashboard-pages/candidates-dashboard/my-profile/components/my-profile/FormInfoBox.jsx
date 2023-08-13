@@ -13,17 +13,14 @@ const FormInfoBox = ({avatarUrl}) => {
         designation: '',
         location: '',
         hourlyRate:'',
+        tags: [],
         email: '',
-        website: '',
-        currentSalary: '',
-        expectedSalary: '',
         experience: '',
         age: '',
         educationLevels: '',
         languages: '',
-        tags: [],
         allowInSearch: 'Yes',
-        description: ''
+        description: '',
       });
 
       
@@ -68,11 +65,11 @@ if (user) {
             />
           </div>
           <div className="form-group col-lg-6 col-md-12">
-            <label>Job Title</label>
+            <label>Current Job Title</label>
             <input 
               type="text" 
               value={candidate.designation} 
-              placeholder="Carpenter"
+              placeholder="Apprentice Carpenter"
               onChange={e => setCandidate(prev => ({ ...prev, designation: e.target.value }))} 
             />
           </div>
@@ -90,8 +87,8 @@ if (user) {
             <label>Hourly $ Rate (Leave blank if you prefer not to disclose)</label>
             <input
               type="number"
-              value={candidate.location}
-              onChange={e => setCandidate(prev => ({...prev, location: e.target.value}))}
+              value={candidate.hourlyRate}
+              onChange={e => setCandidate(prev => ({...prev, hourlyRate: e.target.value}))}
               defaultValue="Not Disclosed"
               // required
             />
@@ -103,16 +100,6 @@ if (user) {
               value={candidate.email}
               onChange={e => setCandidate(prev => ({...prev, email: e.target.value}))}
               placeholder="creativelayers@example.com"
-              // required
-            />
-          </div>
-          <div className="form-group col-lg-6 col-md-12">
-            <label>Website</label>
-            <input
-              type="text"
-              value={candidate.website}
-              onChange={e => setCandidate(prev => ({...prev, website: e.target.value}))}
-              placeholder="www.jerome.com"
               // required
             />
           </div>
@@ -190,11 +177,13 @@ if (user) {
             </select>
           </div>
           <div className="form-group col-lg-12 col-md-12">
-            <label>Description</label>
+            <label>Description (Tell us about yourself.)</label>
             <textarea 
               value={candidate.description}
               onChange={e => setCandidate(prev => ({...prev, description: e.target.value}))}
-              placeholder="Description here..."
+              placeholder="Ever since I can remember, I've been fascinated by the beauty and strength of wood. This passion led me to begin an apprenticeship in 2022, guided by the expertise of Master Carpenter John Smith. Every day, I am privileged to dive deep into the world of carpentry, exploring the balance between traditional techniques and modern design. My hands-on experiences, from crafting custom furniture to creating detailed wood carvings, have cemented my respect for this ancient art form.
+
+              Under John's mentorship, I've learned not only the technical aspects of the craft but also the values of patience, precision, and sustainability. I'm particularly interested in using sustainable materials and practices, ensuring that our beloved craft leaves a minimal footprint on the environment. Outside the workshop, I love venturing into nature, drawing inspiration from the world around me to bring into my work. I believe that every piece of wood has a story to tell, and it's my mission to bring that story to life through my creations."
             ></textarea>
           </div>
           <div className="form-group col-lg-6 col-md-12">
