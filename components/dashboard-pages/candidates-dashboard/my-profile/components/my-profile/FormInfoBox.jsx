@@ -4,13 +4,15 @@ import firebase from 'firebase/app'
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from "../../../../../../utils/firebase";
 import { getAuth } from 'firebase/auth';
+import catOptions from "../../../../../../data/jobCategories";
 const FormInfoBox = ({avatarUrl}) => {
 
       const [candidate, setCandidate] = useState({
         avatar: '',
         name: '',
         designation: '',
-        phone: '',
+        location: '',
+        hourlyRate:'',
         email: '',
         website: '',
         currentSalary: '',
@@ -19,7 +21,7 @@ const FormInfoBox = ({avatarUrl}) => {
         age: '',
         educationLevels: '',
         languages: '',
-        categories: [],
+        tags: [],
         allowInSearch: 'Yes',
         description: ''
       });
@@ -52,17 +54,6 @@ if (user) {
           console.error("Error writing document: ", error);
       }
   }
-  
-    const catOptions = [
-      { value: "Banking", label: "Banking" },
-      { value: "Digital & Creative", label: "Digital & Creative" },
-      { value: "Retail", label: "Retail" },
-      { value: "Human Resources", label: "Human Resources" },
-      { value: "Managemnet", label: "Managemnet" },
-      { value: "Accounting & Finance", label: "Accounting & Finance" },
-      { value: "Digital", label: "Digital" },
-      { value: "Creative Art", label: "Creative Art" },
-    ];
 
     return (
       <form action="#" className="default-form" onSubmit={handleSubmit}>
@@ -86,12 +77,22 @@ if (user) {
             />
           </div>
           <div className="form-group col-lg-6 col-md-12">
-            <label>Phone</label>
+            <label>Location</label>
+            <input
+              type="text"
+              value={candidate.location}
+              onChange={e => setCandidate(prev => ({...prev, location: e.target.value}))}
+              placeholder="New York, NY"
+              // required
+            />
+          </div>
+          <div className="form-group col-lg-6 col-md-12">
+            <label>Hourly $ Rate (Leave blank if you prefer not to disclose)</label>
             <input
               type="number"
-              value={candidate.phone}
-              onChange={e => setCandidate(prev => ({...prev, phone: e.target.value}))}
-              placeholder="0 123 456 7890"
+              value={candidate.location}
+              onChange={e => setCandidate(prev => ({...prev, location: e.target.value}))}
+              defaultValue="Not Disclosed"
               // required
             />
           </div>
@@ -127,18 +128,23 @@ if (user) {
           </div>
           <div className="form-group col-lg-6 col-md-12">
             <label>Age</label>
-            <select 
-              value={candidate.age} 
-              onChange={e => setCandidate(prev => ({...prev, age: e.target.value}))}
-              className="chosen-single form-select" 
-              // required
+            <select
+              value={candidate.age}
+              onChange={e => setCandidate(prev => ({ ...prev, age: e.target.value }))}
+              className="chosen-single form-select"
+            // required
             >
-              <option value="23 - 27 Years">23 - 27 Years</option>
-              <option value="24 - 28 Years">24 - 28 Years</option>
+              <option value="">Select Age Range</option>
+              <option value="16 - 20 Years">16 - 20 Years</option>
+              <option value="20 - 24 Years">20 - 24 Years</option>
               <option value="25 - 29 Years">25 - 29 Years</option>
-              <option value="26 - 30 Years">26 - 30 Years</option>
+              <option value="30 - 34 Years">30 - 34 Years</option>
+              <option value="35 - 39 Years">35 - 39 Years</option>
+              <option value="40+ Years">40+ Years</option>
+              <option value="Undisclosed">Prefer not to say</option>
             </select>
           </div>
+
           <div className="form-group col-lg-6 col-md-12">
             <label>Education Levels</label>
             <input 
@@ -160,15 +166,15 @@ if (user) {
             />
           </div>
           <div className="form-group col-lg-6 col-md-12">
-            <label>Categories </label>
+            <label>Tag your profile (Select all that apply) </label>
             <Select
-              value={candidate.categories}
+              value={candidate.tags}
               isMulti
-              name="categories"
+              name="tags"
               options={catOptions}
               className="basic-multi-select"
               classNamePrefix="select"
-              onChange={e => setCandidate(prev => ({...prev, categories: e}))}
+              onChange={e => setCandidate(prev => ({...prev, tags: e}))}
               // required
             />
           </div>
