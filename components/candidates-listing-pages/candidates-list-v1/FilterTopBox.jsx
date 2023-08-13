@@ -1,7 +1,10 @@
 import Link from "next/link";
+import { db } from "../../../utils/firebase";
+import { collection, getDocs } from "firebase/firestore";
 import ListingShowing from "../components/ListingShowing";
 import candidatesData from "../../../data/candidates";
 import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect } from "react";
 import {
     addCandidateGender,
     addCategory,
@@ -21,6 +24,7 @@ import {
 } from "../../../features/candidate/candidateSlice";
 
 const FilterTopBox = () => {
+    const [candidates, setCandidates] = useState([]);
     const {
         keyword,
         location,
@@ -33,7 +37,18 @@ const FilterTopBox = () => {
         sort,
         perPage,
     } = useSelector((state) => state.candidateFilter) || {};
-
+    useEffect(() => {
+        const fetchData = async () => {
+            const candidatesCollection = collection(db, "candidates");
+            const candidateSnapshot = await getDocs(candidatesCollection);
+            const items = candidateSnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+            setCandidates(items);
+            console.log(items)
+        };
+        fetchData();
+    }, []);
+    console.log(candidates)
+    console.log(candidatesData)
     const dispatch = useDispatch();
 
     // keyword filter
@@ -57,47 +72,47 @@ const FilterTopBox = () => {
     const categoryFilter = (item) =>
         category !== ""
             ? item?.category?.toLocaleLowerCase() ===
-              category?.toLocaleLowerCase()
+            category?.toLocaleLowerCase()
             : item;
 
     // gender filter
     const genderFilter = (item) =>
         candidateGender !== ""
             ? item?.gender.toLocaleLowerCase() ===
-                  candidateGender.toLocaleLowerCase() && item
+            candidateGender.toLocaleLowerCase() && item
             : item;
 
     // date-posted filter
     const datePostedFilter = (item) =>
         datePost !== "all" && datePost !== ""
             ? item?.created_at
-                  ?.toLocaleLowerCase()
-                  .split(" ")
-                  .join("-")
-                  .includes(datePost)
+                ?.toLocaleLowerCase()
+                .split(" ")
+                .join("-")
+                .includes(datePost)
             : item;
 
     // experience filter
     const experienceFilter = (item) =>
         experiences?.length !== 0
             ? experiences?.includes(
-                  item?.experience?.split(" ").join("-").toLocaleLowerCase()
-              )
+                item?.experience?.split(" ").join("-").toLocaleLowerCase()
+            )
             : item;
 
     // qualification filter
     const qualificationFilter = (item) =>
         qualifications?.length !== 0
             ? qualifications?.includes(
-                  item?.qualification?.split(" ").join("-").toLocaleLowerCase()
-              )
+                item?.qualification?.split(" ").join("-").toLocaleLowerCase()
+            )
             : item;
 
     // sort filter
     const sortFilter = (a, b) =>
         sort === "des" ? a.id > b.id && -1 : a.id < b.id && -1;
 
-    let content = candidatesData
+    let content = candidates
         ?.slice(perPage.start, perPage.end === 0 ? 10 : perPage.end)
         ?.filter(keywordFilter)
         ?.filter(locationFilter)
@@ -218,17 +233,17 @@ const FilterTopBox = () => {
 
                 <div className="sort-by">
                     {keyword !== "" ||
-                    location !== "" ||
-                    destination.min !== 0 ||
-                    destination.max !== 100 ||
-                    category !== "" ||
-                    candidateGender !== "" ||
-                    datePost !== "" ||
-                    experiences?.length !== 0 ||
-                    qualifications?.length !== 0 ||
-                    sort !== "" ||
-                    perPage?.start !== 0 ||
-                    perPage?.end !== 0 ? (
+                        location !== "" ||
+                        destination.min !== 0 ||
+                        destination.max !== 100 ||
+                        category !== "" ||
+                        candidateGender !== "" ||
+                        datePost !== "" ||
+                        experiences?.length !== 0 ||
+                        qualifications?.length !== 0 ||
+                        sort !== "" ||
+                        perPage?.start !== 0 ||
+                        perPage?.end !== 0 ? (
                         <button
                             className="btn btn-danger text-nowrap me-2"
                             style={{ minHeight: "45px", marginBottom: "15px" }}
