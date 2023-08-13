@@ -4,7 +4,7 @@ import firebase from 'firebase/app'
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from "../../../../../../utils/firebase";
 import { getAuth } from 'firebase/auth';
-const FormInfoBox = () => {
+const FormInfoBox = ({avatarUrl}) => {
 
       const [candidate, setCandidate] = useState({
         avatar: '',
@@ -23,11 +23,16 @@ const FormInfoBox = () => {
         allowInSearch: 'Yes',
         description: ''
       });
+
+      
       
 
     const handleSubmit = async (e) => {
       e.preventDefault();
-  
+      const updatedCandidate = {
+        ...candidate,
+        avatar: avatarUrl // Set the avatar to the passed prop
+      };
       // Ensure the user is logged in
       const auth = getAuth();
       const user = auth.currentUser;
