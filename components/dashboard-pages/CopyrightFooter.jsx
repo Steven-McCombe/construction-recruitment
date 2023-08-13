@@ -2,15 +2,15 @@ const CopyrightFooter = () => {
   return (
     <div className="copyright-text">
       <p>
-        © {new Date().getFullYear()} Superio by{" "}
+        © {new Date().getFullYear()} Construction job board by{" "}
         <a
-          href="https://themeforest.net/user/ib-themes"
+          href="https:www.twitter.com/st_mccombe"
           target="_blank"
           rel="noopener noreferrer"
         >
-          ib-themes
+          Steven McCombe
         </a>
-        . All Right Reserved.
+      . All Rights Reserved.
       </p>
     </div>
   );
