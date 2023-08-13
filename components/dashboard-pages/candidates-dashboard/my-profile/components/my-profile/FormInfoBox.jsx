@@ -175,23 +175,23 @@ const FormInfoBox = ({ avatarUrl }) => {
             classNamePrefix="select"
             options={languages}
             value={candidate.languages}
-            onChange={e => setCandidate(prev => ({ ...prev, languages: e }))}
+            onChange={e => setCandidate(prev => ({ ...prev, languages: e.map(item => item.value) }))}
             placeholder="e.g English, Spanish"
           // required
           />
         </div>
         <div className="form-group col-lg-6 col-md-12">
-          <label>Tag your profile (Select all that apply) </label>
-          <Select
-            value={candidate.tags}
-            isMulti
-            name="tags"
-            options={catOptions}
-            className="basic-multi-select"
-            classNamePrefix="select"
-            onChange={e => setCandidate(prev => ({ ...prev, tags: e }))}
-          // required
-          />
+  <label>Tag your profile (Select all that apply) </label>
+  <Select
+    value={candidate.tags}
+    isMulti
+    name="tags"
+    options={catOptions}
+    className="basic-multi-select"
+    classNamePrefix="select"
+    onChange={e => setCandidate(prev => ({ ...prev, tags: e.map(item => item.value) }))}
+    // required
+  />
         </div>
         <div className="form-group col-lg-6 col-md-12">
           <label>Allow In Search & Listing</label>
