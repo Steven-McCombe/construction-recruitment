@@ -2,7 +2,7 @@ import FormInfoBox from "./FormInfoBox";
 import LogoUpload from "./LogoUpload";
 import { useState } from "react";
 
-const index = () => {
+const Index = () => {
   const [avatarUrl, setAvatarUrl] = useState("");
 
   return (
@@ -16,4 +16,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;
