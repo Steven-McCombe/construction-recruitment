@@ -10,16 +10,17 @@ import languages from "../../../../../../data/languages";
 const FormInfoBox = ({ avatarUrl }) => {
 
   const [candidate, setCandidate] = useState({
+    id: '',
     avatar: '',
     name: '',
     designation: '',
     location: '',
     hourlyRate: '',
     tags: [],
-    email: '',
+    email:"",
     experience: '',
     age: '',
-    educationLevels: [],
+    educationLevels: "",
     languages: [],
     allowInSearch: 'Yes',
     description: '',
@@ -166,7 +167,6 @@ const FormInfoBox = ({ avatarUrl }) => {
             onChange={e => setCandidate(prev => ({ ...prev, educationLevels: e.target.value}))}
           // required
           >
-
         <option value="">Select Education Level</option>
         <option value="Certificate">Certificate</option>
         <option value="Associate Degree">Associate Degree</option>
@@ -184,9 +184,12 @@ const FormInfoBox = ({ avatarUrl }) => {
             className="basic-multi-select"
             classNamePrefix="select"
             options={languages}
-            value={candidate.languages}
-            onChange={e => setCandidate(prev => ({ ...prev, languages: e.map(item => item.value) }))}
-            placeholder="e.g English, Spanish"
+            value= {candidate.languages}
+            onChange={e => setCandidate(prev => ({ ...prev, languages: e}))}
+            
+            
+            
+                        placeholder="e.g English, Spanish"
           // required
           />
         </div>
@@ -199,7 +202,7 @@ const FormInfoBox = ({ avatarUrl }) => {
             options={catOptions}
             className="basic-multi-select"
             classNamePrefix="select"
-            onChange={e => setCandidate(prev => ({ ...prev, tags: e.map(item => item.value) }))}
+            onChange={e => setCandidate(prev => ({ ...prev, tags: e}))}
           // required
           />
         </div>
@@ -219,9 +222,7 @@ const FormInfoBox = ({ avatarUrl }) => {
           <textarea
             value={candidate.description}
             onChange={e => setCandidate(prev => ({ ...prev, description: e.target.value }))}
-            placeholder="Ever since I can remember, I've been fascinated by the beauty and strength of wood. This passion led me to begin an apprenticeship in 2022, guided by the expertise of Master Carpenter John Smith. Every day, I am privileged to dive deep into the world of carpentry, exploring the balance between traditional techniques and modern design. My hands-on experiences, from crafting custom furniture to creating detailed wood carvings, have cemented my respect for this ancient art form.
-
-              Under John's mentorship, I've learned not only the technical aspects of the craft but also the values of patience, precision, and sustainability. I'm particularly interested in using sustainable materials and practices, ensuring that our beloved craft leaves a minimal footprint on the environment. Outside the workshop, I love venturing into nature, drawing inspiration from the world around me to bring into my work. I believe that every piece of wood has a story to tell, and it's my mission to bring that story to life through my creations."
+            placeholder="Tell us about yourself"
           ></textarea>
         </div>
         <div className="form-group col-lg-6 col-md-12">
