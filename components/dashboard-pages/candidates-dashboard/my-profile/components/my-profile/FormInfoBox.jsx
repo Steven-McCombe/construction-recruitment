@@ -19,7 +19,7 @@ const FormInfoBox = ({ avatarUrl }) => {
     email: '',
     experience: '',
     age: '',
-    educationLevels: '',
+    educationLevels: [],
     languages: [],
     allowInSearch: 'Yes',
     description: '',
@@ -53,6 +53,7 @@ const FormInfoBox = ({ avatarUrl }) => {
 
 
   const handleSubmit = async (e) => {
+    console.log(candidate)
     e.preventDefault();
     const updatedCandidate = {
       ...candidate,
@@ -158,15 +159,24 @@ const FormInfoBox = ({ avatarUrl }) => {
         </div>
 
         <div className="form-group col-lg-6 col-md-12">
-          <label>Education Levels</label>
-          <input
-            type="text"
+          <label>Highest Level of Education</label>
+          <select
             value={candidate.educationLevels}
-            placeholder="High School"
-            onChange={e => setCandidate(prev => ({ ...prev, educationLevels: e.target.value }))}
+            className="chosen-single form-select"
+            onChange={e => setCandidate(prev => ({ ...prev, educationLevels: e.target.value}))}
           // required
-          />
+          >
+
+        <option value="">Select Education Level</option>
+        <option value="Certificate">Certificate</option>
+        <option value="Associate Degree">Associate Degree</option>
+        <option value="Bachelors Degree">Bachelors Degree</option>
+        <option value="Masters Degree">Masters Degree</option>
+        <option value="Doctorate Degree">Doctorate Degree</option>
+        <option value="Other">Other</option>
+        </select>
         </div>
+
         <div className="form-group col-lg-6 col-md-12">
           <label>Languages</label>
           <Select
@@ -181,17 +191,17 @@ const FormInfoBox = ({ avatarUrl }) => {
           />
         </div>
         <div className="form-group col-lg-6 col-md-12">
-  <label>Tag your profile (Select all that apply) </label>
-  <Select
-    value={candidate.tags}
-    isMulti
-    name="tags"
-    options={catOptions}
-    className="basic-multi-select"
-    classNamePrefix="select"
-    onChange={e => setCandidate(prev => ({ ...prev, tags: e.map(item => item.value) }))}
-    // required
-  />
+          <label>Tag your profile (Select all that apply) </label>
+          <Select
+            value={candidate.tags}
+            isMulti
+            name="tags"
+            options={catOptions}
+            className="basic-multi-select"
+            classNamePrefix="select"
+            onChange={e => setCandidate(prev => ({ ...prev, tags: e.map(item => item.value) }))}
+          // required
+          />
         </div>
         <div className="form-group col-lg-6 col-md-12">
           <label>Allow In Search & Listing</label>
