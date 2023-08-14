@@ -41,14 +41,23 @@ const FilterTopBox = () => {
         const fetchData = async () => {
             const candidatesCollection = collection(db, "candidates");
             const candidateSnapshot = await getDocs(candidatesCollection);
-            const items = candidateSnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+            const items = candidateSnapshot.docs.map(doc => {
+                const data = doc.data();
+                
+                // Convert tags and languages to arrays of strings
+                const tags = data.tags ? data.tags.map(tagObj => tagObj.label) : [];
+                const languages = data.languages ? data.languages.map(langObj => langObj.label) : [];
+    
+                return { ...data, id: doc.id, tags, languages };
+            });
+            
             setCandidates(items);
-            console.log(items)
+            console.log(items);
         };
+        
         fetchData();
     }, []);
-    console.log(candidates)
-    console.log(candidatesData)
+    
     const dispatch = useDispatch();
 
     // keyword filter

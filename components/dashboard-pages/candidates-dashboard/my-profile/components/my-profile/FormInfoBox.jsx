@@ -10,6 +10,7 @@ import languages from "../../../../../../data/languages";
 const FormInfoBox = ({ avatarUrl }) => {
 
   const [candidate, setCandidate] = useState({
+    destination:{min:100 , max:0},
     id: '',
     avatar: '',
     name: '',
