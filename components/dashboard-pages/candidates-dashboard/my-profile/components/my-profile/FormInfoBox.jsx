@@ -12,7 +12,7 @@ const FormInfoBox = ({ avatarUrl }) => {
   const [candidate, setCandidate] = useState({
     destination: {min:100 , max:0},
     id: '',
-    avatar: '',
+    avatar:'',
     name: '',
     designation: '',
     location: '',
@@ -29,7 +29,7 @@ const FormInfoBox = ({ avatarUrl }) => {
         //handle state for notifications
         const [notification, setNotification] = useState('');
         const [notificationType, setNotificationType] = useState('');
-      
+   console.log("avatarUrl " + avatarUrl) 
 
   useEffect(() => {
     const auth = getAuth();
@@ -59,36 +59,34 @@ const FormInfoBox = ({ avatarUrl }) => {
 
 
   const handleSubmit = async (e) => {
-    console.log(candidate)
     e.preventDefault();
     const updatedCandidate = {
       ...candidate,
-      avatar: avatarUrl ,
-      // Set the avatar to the passed prop
+      avatar: avatarUrl ,  // Set the avatar to the passed prop
     };
-    // Ensure the user is logged in
+
     const auth = getAuth();
     const user = auth.currentUser;
 
     if (user) {
-    }
+      // Reference to your 'candidates' collection with the user's UID as the document ID
+      const docRef = doc(db, 'candidates', user.uid);
 
-    // Reference to your 'candidates' collection with the user's UID as the document ID
-    const docRef = doc(db, 'candidates', user.uid);
+      try {
+        // Write or overwrite the user's data
+        await setDoc(docRef, updatedCandidate, { merge: true }); // Use updatedCandidate here instead of candidate
 
-    try {
-      // Write or overwrite the user's data
-      await setDoc(docRef, candidate, { merge: true }); // The merge option ensures data fields not provided in the candidate object are retained in Firestore
-      console.log("Data saved successfully.");
-      setNotification('Saved successfully.');
-      setNotificationType('alert alert-success')
-      setCandidate({});
-    } catch (error) {
-      console.error("Error writing document: ", error);
-      setNotification('Error saving Contact Info.');
-      setNotificationType('alert alert-danger')
+        console.log("Data saved successfully.");
+        setNotification('Saved successfully.');
+        setNotificationType('alert alert-success')
+        setCandidate({});
+      } catch (error) {
+        console.error("Error writing document: ", error);
+        setNotification('Error saving Contact Info.');
+        setNotificationType('alert alert-danger')
+      }
     }
-  }
+}
 
   return (
     <form action="#" className="default-form" onSubmit={handleSubmit}>
@@ -180,13 +178,13 @@ const FormInfoBox = ({ avatarUrl }) => {
             value={candidate.educationLevels}
             className="chosen-single form-select"
             onChange={e => setCandidate(prev => ({ ...prev, educationLevels: e.target.value}))}
-          // required
+          required
           >
         <option value="">Select Education Level</option>
         <option value="Certificate">Certificate</option>
         <option value="Associate Degree">Associate Degree</option>
         <option value="Bachelors Degree">Bachelors Degree</option>
-        <option value="Masters Degree">Masters Degree</option>
+        <option value="Master's Degree">Master's Degree</option>
         <option value="Doctorate Degree">Doctorate Degree</option>
         <option value="Other">Other</option>
         </select>

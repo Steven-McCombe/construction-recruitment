@@ -4,32 +4,41 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 
-const LogoUpload = () => {
+const LogoUpload = ({setAvatarUrl}) => {
     const [logImg, setLogoImg] = useState("");
     const [user, setUser] = useState(null);
 
-    useEffect(() => {
-        const auth = getAuth();
-        
-        // Set an observer on the Auth object to get the current user's sign-in status.
-        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            if (currentUser) {
-                setUser(currentUser);
-            } else {
-                console.error('No user signed in.');
+useEffect(() => {
+    const auth = getAuth();
+    
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+        if (currentUser) {
+            setUser(currentUser);
+
+            // Check if there's already an image at the user's path
+            const storage = getStorage();
+            const logoRef = ref(storage, `images/profiles/resource/${currentUser.uid}.png`);
+            
+            try {
+                const existingUrl = await getDownloadURL(logoRef);
+                setAvatarUrl(existingUrl);  // set existing image URL to avatarUrl state
+            } catch (error) {
+                if (error.code === 'storage/object-not-found') {
+                    console.log("No existing image for this user.");
+                } else {
+                    console.error("Error getting download URL:", error);
+                }
             }
-        
+        } else {
+            console.error('No user signed in.');
+        }
+    });
     
-        // Cleanup the listener on component unmount
-        return () => unsubscribe();
-    
-    }, []); // Run this useEffect only once when the component mounts
-    
+    // Cleanup the listener on component unmount
+    return () => unsubscribe();
 
-        // Cleanup the listener on component unmount
-        return () => unsubscribe();
+}, []); // Run this useEffect only once when the component mounts
 
-    }, []); // Run this useEffect only once when the component mounts
 
 const logImgHandler = async (e) => {
     console.dir(user)
@@ -61,6 +70,7 @@ const logImgHandler = async (e) => {
         () => {
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                 console.log('File available at', downloadURL);
+                setAvatarUrl(downloadURL); 
             });
         }
     );
