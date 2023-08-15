@@ -231,7 +231,7 @@ const FormInfoBox = ({ avatarUrl }) => {
           </select>
         </div>
         <div className="form-group col-lg-12 col-md-12">
-          <label>Description (Tell us about yourself.)</label>
+          <label>Description (Tell us about yourself)</label>
           <textarea
             value={candidate.description}
             onChange={e => setCandidate(prev => ({ ...prev, description: e.target.value }))}
