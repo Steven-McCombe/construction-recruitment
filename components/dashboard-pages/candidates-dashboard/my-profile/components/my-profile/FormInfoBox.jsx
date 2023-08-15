@@ -10,7 +10,7 @@ import languages from "../../../../../../data/languages";
 const FormInfoBox = ({ avatarUrl }) => {
 
   const [candidate, setCandidate] = useState({
-    destination:{min:100 , max:0},
+    destination: {min:100 , max:0},
     id: '',
     avatar: '',
     name: '',
@@ -18,7 +18,7 @@ const FormInfoBox = ({ avatarUrl }) => {
     location: '',
     hourlyRate: '',
     tags: [],
-    email:"",
+    gender:"",
     experience: '',
     age: '',
     educationLevels: "",
@@ -59,7 +59,8 @@ const FormInfoBox = ({ avatarUrl }) => {
     e.preventDefault();
     const updatedCandidate = {
       ...candidate,
-      avatar: avatarUrl // Set the avatar to the passed prop
+      avatar: avatarUrl ,
+      // Set the avatar to the passed prop
     };
     // Ensure the user is logged in
     const auth = getAuth();
@@ -91,15 +92,17 @@ const FormInfoBox = ({ avatarUrl }) => {
             value={candidate.name}
             placeholder="Joe Blogs"
             onChange={e => setCandidate(prev => ({ ...prev, name: e.target.value }))}
+            required
           />
         </div>
         <div className="form-group col-lg-6 col-md-12">
-          <label>Current Job Title</label>
+          <label>Current Job Title </label>
           <input
             type="text"
             value={candidate.designation}
             placeholder="Apprentice Carpenter"
             onChange={e => setCandidate(prev => ({ ...prev, designation: e.target.value }))}
+            required
           />
         </div>
         <div className="form-group col-lg-6 col-md-12">
@@ -109,7 +112,7 @@ const FormInfoBox = ({ avatarUrl }) => {
             value={candidate.location}
             onChange={e => setCandidate(prev => ({ ...prev, location: e.target.value }))}
             placeholder="New York, NY"
-          // required
+          required
           />
         </div>
         <div className="form-group col-lg-6 col-md-12">
@@ -122,14 +125,18 @@ const FormInfoBox = ({ avatarUrl }) => {
           />
         </div>
         <div className="form-group col-lg-6 col-md-12">
-          <label>Email address</label>
-          <input
+          <label>Gender</label>
+          <select
             type="text"
-            value={candidate.email}
-            onChange={e => setCandidate(prev => ({ ...prev, email: e.target.value }))}
-            placeholder="creativelayers@example.com"
-          // required
-          />
+            value={candidate.gender}
+            onChange={e => setCandidate(prev => ({ ...prev, gender: e.target.value }))}
+            required
+            defaultValue="Male"
+          >
+            <option value = "Male"> Male</option>
+            <option value = "Female"> Female</option>
+            <option value = "Other"> Other</option>
+          </select>
         </div>
         <div className="form-group col-lg-6 col-md-12">
           <label>Experience</label>
@@ -147,9 +154,8 @@ const FormInfoBox = ({ avatarUrl }) => {
             value={candidate.age}
             onChange={e => setCandidate(prev => ({ ...prev, age: e.target.value }))}
             className="chosen-single form-select"
-          // required
+           required
           >
-            <option value="">Select Age Range</option>
             <option value="16 - 20 Years">16 - 20 Years</option>
             <option value="20 - 24 Years">20 - 24 Years</option>
             <option value="25 - 29 Years">25 - 29 Years</option>
@@ -191,7 +197,7 @@ const FormInfoBox = ({ avatarUrl }) => {
             
             
                         placeholder="e.g English, Spanish"
-          // required
+           required
           />
         </div>
         <div className="form-group col-lg-6 col-md-12">
