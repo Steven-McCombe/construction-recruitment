@@ -184,7 +184,7 @@ const FormInfoBox = ({ avatarUrl }) => {
         <option value="Certificate">Certificate</option>
         <option value="Associate Degree">Associate Degree</option>
         <option value="Bachelors Degree">Bachelors Degree</option>
-        <option value="Master's Degree">Master's Degree</option>
+        <option value="Master`'`s Degree">Master's Degree</option>
         <option value="Doctorate Degree">Doctorate Degree</option>
         <option value="Other">Other</option>
         </select>

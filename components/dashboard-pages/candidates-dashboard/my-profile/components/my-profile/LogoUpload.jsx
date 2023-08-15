@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import firebase from '../../../../../../utils/firebase'; 
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-
+import {resizeImage} from '../../../../../../utils/helpers/profileImageResize'
 
 const LogoUpload = ({setAvatarUrl}) => {
     const [logImg, setLogoImg] = useState("");
@@ -41,9 +41,11 @@ useEffect(() => {
 
 
 const logImgHandler = async (e) => {
-    console.dir(user)
     setLogoImg(e.target.files[0]);
     const file = e.target.files[0];
+
+       // Resize the image using our helper function
+       const resizedImageBlob = await resizeImage(file, 330, 300);
 
     // Check if the user is authenticate
     if (!user) {
@@ -55,7 +57,7 @@ const logImgHandler = async (e) => {
     const storage = getStorage();
     const logoRef = ref(storage, `images/profiles/resource/${uid}.png`);
     
-    const uploadTask = uploadBytesResumable(logoRef, file);
+    const uploadTask = uploadBytesResumable(logoRef, resizedImageBlob);
     
     uploadTask.on('state_changed', 
         (snapshot) => {
