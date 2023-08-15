@@ -26,6 +26,10 @@ const FormInfoBox = ({ avatarUrl }) => {
     allowInSearch: 'Yes',
     description: '',
   });
+        //handle state for notifications
+        const [notification, setNotification] = useState('');
+        const [notificationType, setNotificationType] = useState('');
+      
 
   useEffect(() => {
     const auth = getAuth();
@@ -76,9 +80,13 @@ const FormInfoBox = ({ avatarUrl }) => {
       // Write or overwrite the user's data
       await setDoc(docRef, candidate, { merge: true }); // The merge option ensures data fields not provided in the candidate object are retained in Firestore
       console.log("Data saved successfully.");
+      setNotification('Saved successfully.');
+      setNotificationType('alert alert-success')
       setCandidate({});
     } catch (error) {
       console.error("Error writing document: ", error);
+      setNotification('Error saving Contact Info.');
+      setNotificationType('alert alert-danger')
     }
   }
 
@@ -232,6 +240,8 @@ const FormInfoBox = ({ avatarUrl }) => {
             placeholder="Tell us about yourself"
           ></textarea>
         </div>
+        {notification && 
+      <div className={`notification ${notificationType}`} role='alert'>{notification}</div>} 
         <div className="form-group col-lg-6 col-md-12">
           <button type="submit" className="theme-btn btn-style-one">
             Save

@@ -10,6 +10,9 @@ const SocialNetworkBox = () => {
     linkedin: '',
     googlePlus: ''
   });
+      //handle state for notifications
+      const [notification, setNotification] = useState('');
+      const [notificationType, setNotificationType] = useState('');
 
   useEffect(() => {
     const auth = getAuth();
@@ -47,9 +50,19 @@ const SocialNetworkBox = () => {
       try {
         await setDoc(docRef, { socialLinks }, { merge: true });
         console.log("Social links saved successfully.");
+        setNotification('Saved successfully.')
+          setNotificationType('alert alert-success');
       } catch (error) {
         console.error("Error writing document: ", error);
+        setNotification('Error saving social Info.');
+        setNotificationType('alert alert-danger')
       }
+           //Clear notification after 3 seconds
+           setTimeout(() => {
+            setNotification('');
+            setNotificationType('');
+          }, 5000);
+        
     }
   
   }
@@ -95,6 +108,8 @@ const SocialNetworkBox = () => {
         </div>
 
         {/* <!-- Input --> */}
+        {notification && 
+      <div className={`notification ${notificationType}`} role='alert'>{notification}</div>} 
         <div className="form-group col-lg-6 col-md-12">
           <button type="submit" className="theme-btn btn-style-one">
             Save
