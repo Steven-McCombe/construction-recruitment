@@ -9,7 +9,9 @@ const Index = () => {
     <div className="widget-content">
       <LogoUpload setAvatarUrl={setAvatarUrl}/>
       {/* End logo and cover photo components */}
+      <div className="items-center"> 
       {avatarUrl && <img src={avatarUrl} alt="User Avatar" />}
+      </div>
       <FormInfoBox avatarUrl={avatarUrl}/>
       {/* compnay info box */}
     </div>

@@ -45,7 +45,7 @@ const logImgHandler = async (e) => {
     const file = e.target.files[0];
 
        // Resize the image using our helper function
-       const resizedImageBlob = await resizeImage(file, 330, 300);
+       const resizedImageBlob = await resizeImage(file, 330, 330);
 
     // Check if the user is authenticate
     if (!user) {
@@ -101,7 +101,7 @@ const logImgHandler = async (e) => {
                     <span className="uploadButton-file-name"></span>
                 </div>
                 <div className="text">
-                    Max file size is 1MB, Minimum dimension: 330x300 And
+                   Profile images will be resized to: 330x330px
                     Suitable files are .jpg & .png
                 </div>
             </div>
