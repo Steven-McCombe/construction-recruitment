@@ -7,13 +7,15 @@ const Index = () => {
 
   return (
     <div className="widget-content">
-      <LogoUpload setAvatarUrl={setAvatarUrl}/>
-      {/* End logo and cover photo components */}
-      <div className="items-center"> 
-      {avatarUrl && <img src={avatarUrl} alt="User Avatar" />}
+      <LogoUpload setAvatarUrl={setAvatarUrl} />
+      <div className="text-center"> 
+        {avatarUrl && (
+          <div className="avatar-container">
+            <img className="rounded-circle shadow p-1 m-2" src={avatarUrl} alt="User Avatar" />
+          </div>
+        )}
       </div>
-      <FormInfoBox avatarUrl={avatarUrl}/>
-      {/* compnay info box */}
+      <FormInfoBox avatarUrl={avatarUrl} />
     </div>
   );
 };
